@@ -9,16 +9,15 @@ let userNameInputValue = "";
 
 
 async function gitfetch(username) {
+
     const result = fetch(`https://api.github.com/users/${username}`);
     // now i will get the unclean obj
     const unCleanObj = await result;
-    const CleanObj = await unCleanObj.json();  // this  will give me the obj that i got from the promice it is same as then ok 
-    console.log(CleanObj);
-    return CleanObj;// now i am returning that same obj but then i try to print it in this like 
+    return unCleanObj.json(); // async will make it a promise box even if we use await
 }
 
 function searchBtn() { 
     userNameInputValue = usernameInput.value.trim();
-    console.log(gitfetch(userNameInputValue)); // 
-  
+    // need do something so it become an value not a promise  
+    console.log(gitfetch(userNameInputValue));   
 }

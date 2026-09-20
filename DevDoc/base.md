@@ -35,3 +35,18 @@
   So: bytes → text → JS object.
   Two waits, two promises: one for the headers (fetch), one for the body (.json).
 */
+
+
+
+
+
+2 - console.log(gitfetch(userNameInputValue)); // this is giving some thing like promise pending i was thinking it will give me the the obj in json but it is not not sure why - 
+async function gitfetch(username) {
+
+    const result = fetch(`https://api.github.com/users/${username}`);
+    // now i will get the unclean obj
+    const unCleanObj = await result;
+    const CleanObj = await unCleanObj.json();  // this  will give me the obj that i got from the promice it is same as then ok 
+    console.log(CleanObj); // this is givng the obj no promise pending why ? 
+    return CleanObj;// now i am returning that same obj but then i try to print it in this like console.log(CleanObj); this is giving me the obj 
+}
