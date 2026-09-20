@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GITHUBfetch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---------- Colors & basics ---------- */
+    :root {
+      --bg: #131010;          /* page background */
+      --panel: #1a1717;       /* search box background */
+      --terminal: #0a0808;    /* the black result box */
+      --line: #2c2828;        /* borders */
+      --text: #f1ecec;        /* main text */
+      --muted: #8f8a8a;       /* grey text */
+      --accent: #5b8def;      /* blue bar on the left */
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "IBM Plex Mono", Menlo, Consolas, monospace;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      min-height: 100vh;
+    }
+
+    /* ---------- Header ---------- */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 28px 64px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+    .logo .dim { color: var(--muted); }
+
+    nav { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+    nav a { color: var(--text); text-decoration: none; font-size: 15px; }
+    nav a:hover { color: var(--muted); }
+
+    .btn-light {
+      background: var(--text);
+      color: var(--bg);
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .btn-light:hover { color: var(--bg); opacity: 0.85; }
+
+    /* ---------- Hero ---------- */
+    .hero { padding: 90px 64px 60px; }
+
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 48px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 620px;
+      line-height: 1.9;
+    }
+
+    /* ---------- Search box (like the install box) ---------- */
+    .search-box {
+      margin-top: 40px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 32px;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+    .tab {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font: inherit;
+      font-size: 15px;
+      padding: 16px 0;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+    .tab.active { color: var(--text); border-bottom-color: var(--text); }
+
+    .search-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 24px 28px;
+    }
+
+    .prefix { color: var(--muted); font-size: 16px; }
+
+    #username {
+      flex: 1;
+      min-width: 180px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+      font: inherit;
+      font-size: 16px;
+      padding: 6px 2px;
+      outline: none;
+    }
+    #username:focus { border-bottom-color: var(--text); }
+
+    select {
+      background: var(--terminal);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      font: inherit;
+      font-size: 14px;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+
+    #searchBtn {
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: 4px;
+      font: inherit;
+      font-weight: 500;
+      padding: 9px 20px;
+      cursor: pointer;
+    }
+    #searchBtn:hover { opacity: 0.85; }
+
+    button:focus-visible, select:focus-visible, a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ---------- Black result box ---------- */
+    .terminal {
+      background: var(--terminal);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0 0 40px;
+    }
+
+    .prompt {
+      border-left: 3px solid var(--accent);
+      margin-left: 12px;
+      padding: 22px 36px;
+      background: #141111;
+    }
+    .prompt .cmd { font-weight: 500; }
+    .prompt .who { color: var(--muted); }
+
+    .output { padding: 24px 48px; }
+
+    .output .status { margin-bottom: 18px; }
+    .output .tool { color: var(--muted); }
+
+    /* profile card inside the terminal */
+    .profile {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .profile img {
+      width: 96px;
+      height: 96px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+    }
+    .profile h2 { font-size: 22px; }
+    .profile .login { color: var(--muted); }
+    .profile .bio { margin-top: 8px; max-width: 560px; }
+
+    .stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    .stat b { font-size: 28px; display: block; }
+    .stat span { color: var(--muted); font-size: 14px; }
+
+    .tree { list-style: none; color: var(--muted); }
+    .tree li { padding: 2px 0; }
+    .tree li::before { content: "├ "; }
+    .tree li:last-child::before { content: "└ "; }
+    .tree a { color: var(--text); text-decoration: none; }
+    .tree a:hover { text-decoration: underline; }
+
+    .error { color: #ef6b6b; }
+
+    footer {
+      padding: 32px 64px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ---------- Phones ---------- */
+    @media (max-width: 640px) {
+      header, .hero, footer { padding-left: 22px; padding-right: 22px; }
+      .output { padding: 20px 22px; }
+      .prompt { padding: 18px 20px; }
+      nav { gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <header>
+      <div class="logo"><span class="dim">GITHUB</span>fetch</div>
+      <nav>
+        <a href="https://github.com" target="_blank">GitHub</a>
+      </nav>
+    </header>
+
+    <!-- Hero + search -->
+    <section class="hero">
+      <h1>Look up any GitHub profile</h1>
+      <p>Type a username and pick what you want to see: the full profile,
+        followers, following or repositories. Made for learning how the
+        GitHub API works.</p>
+
+      <div class="search-box">
+        <div class="tabs">
+          <button class="tab active">search</button>
+        </div>
+
+        <div class="search-row">
+          <span class="prefix">github.com/</span>
+          <input id="username" type="text" placeholder="torvalds" autocomplete="off">
+
+          <!-- Dropdown: what the user wants to see -->
+          <select id="view">
+            <option value="all">All info</option>
+            <option value="followers">Followers</option>
+            <option value="following">Following</option>
+            <option value="repos">Repositories</option>
+          </select>
+
+          <button id="searchBtn" onclick="searchBtn()">Search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Black result box -->
+    <section class="terminal" id="result">
+      <div class="prompt">
+        <div class="cmd" id="promptText">fetch a github profile</div>
+        <div class="who">you</div>
+      </div>
+      <div class="output" id="output">
+        <p class="status">Enter a username above and hit Search. The result shows up here.</p>
+      </div>
+    </section>
+
+    <footer>GITHUBfetch · uses the public GitHub API (60 requests per hour without login)</footer>
+  </div>
+
+  <script src="/Main/main.js" defer>
+  </script>
+</body>
+</html>
