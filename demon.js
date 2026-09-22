@@ -1,3 +1,7 @@
+//!self learn section lol no hate please !!!! 
+
+
+
 
 // async function demon () {
 //     let dex = await 7; // give me the promise value i think 
@@ -41,11 +45,38 @@
 //demon().then(m =>console.log(m)) using this i am able to get the value but is that the only methold ?? 
 
 
-const user = { followers: 50, key: "surprise!" };
-const key = "followers";
+// const user = { followers: 50, key: "surprise!" };
+// const key = "followers";
 
-console.log(user.key); // got this 
-console.log(user[key]);// wtf is that bro why it is printing 50 man wtf ? 
+// console.log(user.key); // got this 
+// console.log(user[key]);// wtf is that bro why it is printing 50 man wtf ? 
 // key = followers so it is a key ok. 
 // user.followers is that igt is doing ? cause in know that if you want to add a key value pare in some obj you do 
 // user[key] = value;
+
+
+
+
+// i know that promise is a class and from the class we are making it a function. and it must have some constructor 
+// which mean that resolve and reject is a constructor(no it is not this is a func) so i need some value to displace or give like promise done or not 
+// some thing like resoleve("")
+// function promisesetimeout (func,time) { 
+//     let demon = new Promise ((resolve,reject,)=> { 
+//         setTimeout(() => {
+//             try { 
+//                 func();
+//                 resolve("succes");
+
+
+//             }catch (error){ 
+//                 reject("error");
+
+//             }
+            
+//         }, time);
+     
+//         });
+//     return demon;
+// } 
+
+// console.log(promisesetimeout(()=>console.log(5),2000)); // 

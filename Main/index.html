@@ -7,15 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    /* ---------- Colors & basics (same as GITHUBfetch) ---------- */
+    /* colors copied from my GITHUBfetch project */
     :root {
-      --bg: #131010;          /* page background */
-      --panel: #1a1717;       /* search box background */
-      --terminal: #0a0808;    /* the black result box */
-      --line: #2c2828;        /* borders */
-      --text: #f1ecec;        /* main text */
-      --muted: #8f8a8a;       /* grey text */
-      --accent: #5b8def;      /* blue bar on the left */
+      --bg: #131010;
+      --panel: #1a1717;
+      --terminal: #0a0808;
+      --line: #2c2828;
+      --text: #f1ecec;
+      --muted: #8f8a8a;
+      --accent: #5b8def;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,7 +35,7 @@
       min-height: 100vh;
     }
 
-    /* ---------- Header ---------- */
+    /* header */
     header {
       display: flex;
       align-items: center;
@@ -45,7 +45,6 @@
       padding: 28px 64px;
       border-bottom: 1px solid var(--line);
     }
-
     .logo {
       font-size: 28px;
       font-weight: 700;
@@ -57,16 +56,13 @@
     nav a { color: var(--text); text-decoration: none; font-size: 15px; }
     nav a:hover { color: var(--muted); }
 
-    /* ---------- Hero ---------- */
     .hero { padding: 70px 64px 40px; text-align: center; }
-
     .hero h1 {
-      font-size: clamp(30px, 5vw, 48px);
+      font-size: 48px;
       font-weight: 700;
       line-height: 1.2;
       margin-bottom: 18px;
     }
-
     .hero p {
       color: var(--muted);
       font-size: 17px;
@@ -75,7 +71,7 @@
       margin: 0 auto;
     }
 
-    /* ---------- Arena: fighter | VS | fighter ---------- */
+    /* fighter 1 | vs | fighter 2 */
     .arena {
       display: grid;
       grid-template-columns: 1fr 180px 1fr;
@@ -86,7 +82,6 @@
 
     .fighter { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 
-    /* big empty box where the avatar / profile shows */
     .fighter-card {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -119,20 +114,17 @@
       gap: 32px;
       align-self: stretch;
     }
-
     .vs {
       font-size: 56px;
       font-weight: 700;
       letter-spacing: -2px;
     }
 
-    /* ---------- Search box (same look as before) ---------- */
     .search-box {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 6px;
     }
-
     .search-row {
       display: flex;
       flex-direction: column;
@@ -140,7 +132,7 @@
       padding: 18px 20px;
     }
 
-    /* "github.com/" + input always stay on one line */
+    /* keeps github.com/ and the input on the same line */
     .input-line {
       display: flex;
       align-items: baseline;
@@ -151,8 +143,6 @@
     .input-line:focus-within { border-bottom-color: var(--text); }
 
     .prefix { color: var(--muted); font-size: 15px; white-space: nowrap; flex-shrink: 0; }
-
-    .search-row select { width: 100%; }
 
     #username, #username2 {
       flex: 1;
@@ -168,6 +158,7 @@
     }
 
     select {
+      width: 100%;
       background: var(--terminal);
       color: var(--text);
       border: 1px solid var(--line);
@@ -190,16 +181,14 @@
       white-space: nowrap;
     }
     #searchBtn:hover, #searchBtn2:hover, #battleBtn:hover { opacity: 0.85; }
-
-    /* search buttons inside the consoles are a bit smaller */
     #searchBtn, #searchBtn2 { padding: 8px 18px; }
 
-    button:focus-visible, select:focus-visible, a:focus-visible, input:focus-visible {
+    button:focus-visible, select:focus-visible, a:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
 
-    /* ---------- Two black consoles side by side ---------- */
+    /* the two black consoles at the bottom */
     .consoles {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -215,27 +204,23 @@
     }
 
     .prompt {
-      border-left: 3px solid var(--accent);
-      margin-left: 12px;
-      padding: 22px 28px;
-      background: #141111;
-    }
-    .prompt {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
+      border-left: 3px solid var(--accent);
+      margin-left: 12px;
+      padding: 22px 28px;
+      background: #141111;
     }
     .prompt .cmd { font-weight: 500; }
     .prompt .who { color: var(--muted); }
 
     .output { padding: 24px 32px; overflow-wrap: anywhere; }
-
     .output .status { margin-bottom: 18px; }
     .output .tool { color: var(--muted); }
 
-    /* profile card inside the terminal */
     .profile {
       display: flex;
       gap: 20px;
@@ -276,8 +261,9 @@
       color: var(--muted);
       font-size: 13px;
     }
+    footer a { color: var(--text); }
 
-    /* ---------- Tablets ---------- */
+    /* tablet */
     @media (max-width: 900px) {
       .arena { grid-template-columns: 1fr; padding: 0 22px 40px; }
       .middle { order: 2; flex-direction: row; gap: 24px; }
@@ -287,9 +273,10 @@
       .consoles .terminal + .terminal { border-left: none; border-top: 1px solid var(--line); }
     }
 
-    /* ---------- Phones ---------- */
+    /* phone */
     @media (max-width: 640px) {
       header, .hero, footer { padding-left: 22px; padding-right: 22px; }
+      .hero h1 { font-size: 32px; }
       .output { padding: 20px 22px; }
       .prompt { padding: 18px 20px; }
       nav { gap: 16px; }
@@ -300,25 +287,22 @@
 <body>
   <div class="page">
 
-    <!-- Header -->
     <header>
       <div class="logo"><span class="dim">GITAURA</span>battle</div>
       <nav>
-        <a href="https://github.com" target="_blank">GitHub</a>
+        <a href="https://github.com/ekanshvcpkg/github-fetcher" target="_blank">GitHub</a>
       </nav>
     </header>
 
-    <!-- Title -->
     <section class="hero">
       <h1>GitAuraBattle</h1>
       <p>Enter two GitHub usernames, pick what you want to compare and
         start the battle. Each fighter's result shows up in their own console.</p>
     </section>
 
-    <!-- Arena -->
     <section class="arena">
 
-      <!-- Fighter 1 -->
+      <!-- fighter 1 -->
       <div class="fighter fighter-1">
         <div class="fighter-card" id="card1">
           <p class="placeholder">Fighter 1 shows up here</p>
@@ -328,27 +312,28 @@
           <div class="search-row">
             <div class="input-line">
               <span class="prefix">github.com/</span>
-              <input id="username" type="text" placeholder="torvalds" autocomplete="off" aria-label="Username for fighter 1">
+              <input id="username" type="text" placeholder="torvalds" autocomplete="off">
             </div>
-
-            <select id="view" aria-label="What to show for fighter 1">
+            <select id="view">
               <option value="all">All info</option>
               <option value="followers">Followers</option>
               <option value="following">Following</option>
-              <option value="repos">Repositories</option>
+              <option value="location">Location</option>
               <option value="name">Name</option>
+              <option value="public_repos">Public_repos</option>
+              <option value="created_at">Created_at</option>
+              <option value="updated_at">Updated_at</option>
             </select>
           </div>
         </div>
       </div>
 
-      <!-- Middle: VS + button -->
       <div class="middle">
         <div class="vs">VS</div>
         <button id="battleBtn" onclick="auraBattle()">Start aura battle</button>
       </div>
 
-      <!-- Fighter 2 -->
+      <!-- fighter 2 -->
       <div class="fighter fighter-2">
         <div class="fighter-card" id="card2">
           <p class="placeholder">Fighter 2 shows up here</p>
@@ -358,15 +343,17 @@
           <div class="search-row">
             <div class="input-line">
               <span class="prefix">github.com/</span>
-              <input id="username2" type="text" placeholder="gaearon" autocomplete="off" aria-label="Username for fighter 2">
+              <input id="username2" type="text" placeholder="gaearon" autocomplete="off">
             </div>
-
-            <select id="view2" aria-label="What to show for fighter 2">
+            <select id="view2">
               <option value="all">All info</option>
               <option value="followers">Followers</option>
               <option value="following">Following</option>
-              <option value="repos">Repositories</option>
+              <option value="location">Location</option>
               <option value="name">Name</option>
+              <option value="public_repos">Public_repos</option>
+              <option value="created_at">Created_at</option>
+              <option value="updated_at">Updated_at</option>
             </select>
           </div>
         </div>
@@ -374,10 +361,8 @@
 
     </section>
 
-    <!-- Two black consoles -->
     <section class="consoles">
 
-      <!-- Console for user 1 -->
       <div class="terminal" id="result">
         <div class="prompt">
           <div>
@@ -391,7 +376,6 @@
         </div>
       </div>
 
-      <!-- Console for user 2 -->
       <div class="terminal" id="result2">
         <div class="prompt">
           <div>
@@ -407,10 +391,12 @@
 
     </section>
 
-    <footer>GITAURAbattle · uses the public GitHub API (60 requests per hour without login)</footer>
+    <footer>
+      Project made for learning by EKANSH-VCPKG
+      <a href="https://x.com/ekanshvcpkg" target="_blank">x.com/ekanshvcpkg</a>
+    </footer>
   </div>
 
-  <script src="/Main/main.js" defer>
-  </script>
+  <script src="/Main/main.js" defer></script>
 </body>
 </html>
