@@ -9,10 +9,17 @@ const dataPrintBase = document.getElementById("output");
 const dataPrintBase2 = document.getElementById("output2");
 const card1 = document.getElementById("card1");
 const card2 = document.getElementById("card2");
+const loadingOverlay = document.getElementById('loadingOverlay');
+const loadingFight = document.getElementById('fight-loader-overlay');
+const avatar1 = document.getElementById('avatar-1');
+const avatar2 = document.getElementById('avatar-2');
+const winOverlay = document.getElementById('win-screen-overlay');
+const winOverlayAve = document.getElementById('winner-avatar');
+
 
 
 console.log("opc",sellectionOpt.value); // this is not giving obj it is giving all which is the part of view 
-// console.log(sellectionOpt[3]); this works
+// console.log(sellectionOpt[3]); this worksx
 
 let userNameInputValueUser= "";
 let userNameInputValueUser2 = "";
@@ -21,6 +28,10 @@ let getFetchDataForUser2 = {}; // obj
 let userSellectedOpection = "";
 let imageForUser = "";
 let imageForUser2 = "";
+let user1fightvalue = [];
+let user2fightvalue = [];
+let user1totalpoint = 0; 
+let user2totalpoint = 0;
 
 const para = document.createElement("p");
 const options = [
@@ -37,7 +48,10 @@ const options = [
 async function gitfetch(username) {
   const result = fetch(`https://api.github.com/users/${username}`);
   // now i will get the unclean obj
-  const unCleanObj = await result; // json also give a promises
+  const unCleanObj = await result; // json also give a promises  
+  if (unCleanObj.status === 404) throw new Error("User Not Found");
+  if (unCleanObj.status === 403) throw new Error("To Many Req");
+  if (!unCleanObj.ok) throw new Error("Git Error-"+unCleanObj.status);
   return unCleanObj.json();  // async will make it a promise box even if we use await
 }
 
@@ -45,6 +59,8 @@ async function gitfetch(username) {
 //! 3 - SearchBtn
 async function searchBtn() {
   //   console.log(userNameInputValueUser);
+    user1fightvalue=[];
+  showLoading();
   if (usernameInput.value!= "" && userNameInputValueUser!=usernameInput.value.trim()) {
     //  console.log(userNameInputValueUser);
       userNameInputValueUser = usernameInput.value.trim();
@@ -54,11 +70,17 @@ async function searchBtn() {
       imageForUser = getFetchDataForUser.avatar_url;
       //console.log("imagelog",imageForUser);
       printData(dataPrintBase,getFetchDataForUser,sellectionOpt,imageForUser,card1);
+      console.log("RUN LOG");
+      user1fightvalue.push(Number(getFetchDataForUser.public_repos*4),Number(getFetchDataForUser.followers*2),Number(getFetchDataForUser.following));
+      console.log("ARRAY-MAIN-",user1fightvalue);
   }else { 
     errorlog("User input error(empty||previous name)", 1);
   }
+  hideLoading();
 }
 async function searchBtn2() {
+      showLoading();
+      user2fightvalue=[];
 //   console.log(userNameInputValueUser2);
   if (usernameInput2.value!="" && userNameInputValueUser2!=usernameInput2.value.trim()) {
     // console.log("it is not empty user input 2");
@@ -69,51 +91,50 @@ async function searchBtn2() {
     imageForUser2 = getFetchDataForUser2.avatar_url;
    //  console.log("imagebase",imageForUser2);
     printData(dataPrintBase2,getFetchDataForUser2,sellectionOpt2,imageForUser2,card2);
+     // [total repo , total followers , total following] // +4 / +2 / -1
+    user2fightvalue.push(Number(getFetchDataForUser2.public_repos)*4,Number(getFetchDataForUser2.followers)*2,Number(getFetchDataForUser2.following));
+    console.log("ARRAY-MAIN", user2fightvalue);
+
 
   } else {
     errorlog("User input error(empty||previous name)",2);
   }
+  hideLoading();
 }
 
 //! 4 - PrintFunc
 function printData(dataprintbaseinput , getFetchDataForUserInput , sellectionOptInput , imageinput , cardinput ) {
   printImage(cardinput , imageinput);
+  dataprintbaseinput.innerHTML = "";
   const paratemp = document.createElement("p");
   if (sellectionOptInput.value === "followers") {
     console.log("followers");
-    dataprintbaseinput.innerHTML = "";
     paratemp.textContent = `Followers-${getFetchDataForUserInput.followers}`;
     dataprintbaseinput.appendChild(paratemp);
   } else if (sellectionOptInput.value === "following") {
     console.log("following");
-    dataprintbaseinput.innerHTML = "";
+   
     paratemp.textContent = `Following-${getFetchDataForUserInput.following}`;
     dataprintbaseinput.appendChild(paratemp);
   } else if (sellectionOptInput.value === "location") {
     console.log("location");
-    dataprintbaseinput.innerHTML = "";
     paratemp.textContent = `Location-${getFetchDataForUserInput.location}`;
     dataprintbaseinput.appendChild(paratemp);
   } else if (sellectionOptInput.value === "name") {
     console.log("name");
-    dataprintbaseinput.innerHTML = "";
     paratemp.textContent = `Name-${getFetchDataForUserInput.name}`;
     dataprintbaseinput.appendChild(paratemp);
   } else if (sellectionOptInput.value === "public_repos") {
-    dataprintbaseinput.innerHTML = "";
     paratemp.textContent = `Public_repos-${getFetchDataForUserInput.public_repos}`;
     dataprintbaseinput.appendChild(paratemp);
   } else if (sellectionOptInput.value === "created_at") {
-    dataprintbaseinput.innerHTML = "";
     paratemp.textContent = `Created_at-${getFetchDataForUserInput.created_at}`;
     dataprintbaseinput.appendChild(paratemp);
   } else if (sellectionOptInput.value === "updated_at") {
-    dataprintbaseinput.innerHTML = "";
     paratemp.textContent = `Updated_at-${getFetchDataForUserInput.created_at}`;
     dataprintbaseinput.appendChild(paratemp);
   } else {
     console.log("all");
-    dataprintbaseinput.innerHTML = "";
     for (let i = 0; i < options.length; i++) {
       let temppera = document.createElement("p");
       temppera.textContent = `${fistoneupper(options[i])}-${getFetchDataForUserInput[options[i]]}`;
@@ -137,8 +158,6 @@ sellectionOpt2.addEventListener("change",()=>{
     }
 
 });
-
-
 
 
 
@@ -179,3 +198,66 @@ function printImage (container , inputimage) {
 
 }
 
+function auraBattle() {
+  if (user1fightvalue.length !== 3 || user2fightvalue.length !== 3) {
+    alert("Search both fighters first!");
+    return;
+  }
+  fightLoding();
+
+  setTimeout(() => {
+    try {
+      user1totalpoint = user1fightvalue[0] + user1fightvalue[1] - user1fightvalue[2];
+      user2totalpoint = user2fightvalue[0] + user2fightvalue[1] - user2fightvalue[2];
+      fightLodinghidden();
+
+      if (user1totalpoint > user2totalpoint) {
+        wonoverlay(imageForUser, userNameInputValueUser);
+      } else if (user2totalpoint > user1totalpoint) {
+        wonoverlay(imageForUser2, userNameInputValueUser2);
+      } else {
+        alert("BOTH WON!!!");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong in the battle");
+      location.reload();
+    }
+  }, 3000);  
+}
+
+function showLoading() {
+  loadingOverlay.classList.remove('hidden');
+}
+function hideLoading() {
+  loadingOverlay.classList.add('hidden');
+}
+function fightLoding(inputimage1,inputimage2) { 
+    avatar1.src = imageForUser;
+    avatar2.src = imageForUser2;
+    loadingFight.classList.remove('hidden');
+
+}
+function fightLodinghidden() { 
+    loadingFight.classList.add('hidden');
+}
+function wonoverlay(image , name ) { 
+  console.log("Running winner over lay-", image , name);
+  winOverlay.classList.add('hidden');
+  winOverlayAve.src = image; 
+  document.getElementById('winner-name').textContent = "@" + name;
+  winOverlay.classList.remove('hidden');
+  let count = 10; 
+  let resetTimer = null;
+  const countEl = document.getElementById("reset-count");
+  countEl.textContent = count;
+  clearInterval(resetTimer);                            
+  resetTimer = setInterval(() => {                     
+    count--;                                             
+    countEl.textContent = count;                        
+    if (count <= 0) {                                   
+      clearInterval(resetTimer);                        
+      location.reload();                               
+    }
+  }, 1000);
+}

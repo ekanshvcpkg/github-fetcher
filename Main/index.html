@@ -263,7 +263,7 @@
     }
     footer a { color: var(--text); }
 
-    /* tablet */
+    /* tablet (given by ai ) */
     @media (max-width: 900px) {
       .arena { grid-template-columns: 1fr; padding: 0 22px 40px; }
       .middle { order: 2; flex-direction: row; gap: 24px; }
@@ -273,7 +273,7 @@
       .consoles .terminal + .terminal { border-left: none; border-top: 1px solid var(--line); }
     }
 
-    /* phone */
+    /* phone (given by ai)*/
     @media (max-width: 640px) {
       header, .hero, footer { padding-left: 22px; padding-right: 22px; }
       .hero h1 { font-size: 32px; }
@@ -282,9 +282,293 @@
       nav { gap: 16px; }
       .vs { font-size: 40px; }
     }
+   
+#loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(19, 16, 16, 0.85); 
+  z-index: 9999; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  backdrop-filter: blur(4px); 
+}
+
+
+#loadingOverlay.hidden {
+  display: none;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#fight-loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(19, 16, 16, 0.95);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      backdrop-filter: blur(6px);
+      transition: opacity 0.3s ease;
+    }
+
+    #fight-loader-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .fight-arena {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      position: relative;
+    }
+
+    .fighter-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--line);
+      box-shadow: 0 0 20px rgba(91, 141, 239, 0.15);
+      z-index: 2;
+    }
+
+    .fighter-left {
+      animation: attackLeft 0.3s ease-in-out infinite alternate;
+    }
+
+    .fighter-right {
+      animation: attackRight 0.3s ease-in-out infinite alternate-reverse;
+    }
+
+    .clash-effect {
+      position: absolute;
+      font-size: 80px;
+      z-index: 10;
+      animation: clashFlash 0.3s steps(2) infinite;
+      user-select: none;
+    }
+
+    @keyframes attackLeft {
+      0% { transform: translateX(-20px) rotate(0deg); }
+      100% { transform: translateX(35px) rotate(15deg) scale(1.1); }
+    }
+
+    @keyframes attackRight {
+      0% { transform: translateX(20px) rotate(0deg); }
+      100% { transform: translateX(-35px) rotate(-15deg) scale(1.1); }
+    }
+
+    @keyframes clashFlash {
+      0%, 100% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+      50% { opacity: 1; transform: scale(1.2) rotate(15deg); color: #ffeb3b; filter: drop-shadow(0 0 20px #ffeb3b); }
+    }
+
+    .loader-text {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 2px;
+      animation: pulseText 0.8s infinite alternate;
+      text-transform: uppercase;
+    }
+
+    @keyframes pulseText {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+
+    /* ===== WIN SCREEN ===== */
+#win-screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(19, 16, 16, 0.96);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  backdrop-filter: blur(6px);
+  transition: opacity 0.3s ease;
+}
+#win-screen-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.win-title {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #ffeb3b;
+  text-shadow: 0 0 20px rgba(255, 235, 59, 0.5);
+}
+
+.shrine {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* the winner + glowing rays */
+.winner-wrap {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+.winner-rays {
+  position: absolute;
+  inset: -60px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255, 235, 59, 0.25) 0 10deg, transparent 10deg 20deg);
+  mask: radial-gradient(circle, #000 30%, transparent 70%);
+  -webkit-mask: radial-gradient(circle, #000 30%, transparent 70%);
+  animation: raysSpin 8s linear infinite;
+}
+.winner-avatar {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffeb3b;
+  box-shadow: 0 0 40px rgba(255, 235, 59, 0.6);
+  animation: winnerFloat 1.6s ease-in-out infinite alternate;
+}
+
+/* dotted worshipper */
+.worshipper { width: 130px; height: 130px; overflow: visible; }
+.worshipper.flip { transform: scaleX(-1); }
+.worshipper .dots {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 0 9; /* this is what turns lines into dots */
+}
+.worshipper .upper {
+  transform-box: view-box;
+  transform-origin: 45px 95px; /* the hip */
+  animation: bowDown 1.2s ease-in-out infinite;
+}
+
+.winner-name { font-size: 22px; font-weight: 700; }
+.reset-text { color: var(--muted); font-size: 15px; }
+.reset-text b { color: var(--accent); font-size: 20px; }
+
+@keyframes raysSpin { to { transform: rotate(360deg); } }
+@keyframes winnerFloat {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-10px); }
+}
+@keyframes bowDown {
+  0%, 15%  { transform: rotate(0deg); }   /* arms up */
+  50%, 65% { transform: rotate(72deg); }  /* head down */
+  100%     { transform: rotate(0deg); }
+}
+
+@media (max-width: 640px) {
+  .worshipper { width: 80px; height: 80px; }
+  .winner-wrap, .winner-avatar { width: 110px; height: 110px; }
+  .win-title { font-size: 30px; }
+}
+    
   </style>
 </head>
 <body>
+
+
+
+  <div id="win-screen-overlay" class="hidden">
+  <div class="win-title">WINNER</div>
+
+  <div class="shrine">
+    <!-- left worshipper -->
+    <svg class="worshipper" viewBox="0 0 120 120">
+      <path class="dots" d="M45 95 L72 108 L36 110" />
+      <g class="upper">
+        <path class="dots" d="M45 95 L45 58" />
+        <circle class="dots" cx="45" cy="44" r="10" />
+        <path class="dots" d="M45 62 L68 30" />
+        <path class="dots" d="M45 62 L60 26" />
+      </g>
+    </svg>
+
+    <div class="winner-wrap">
+      <div class="winner-rays"></div>
+      <img id="winner-avatar" class="winner-avatar" src="https://placehold.co/200x200/1a1717/8f8a8a?text=WIN" alt="Winner">
+    </div>
+
+    <!-- right worshipper (mirrored) -->
+    <svg class="worshipper flip" viewBox="0 0 120 120">
+      <path class="dots" d="M45 95 L72 108 L36 110" />
+      <g class="upper">
+        <path class="dots" d="M45 95 L45 58" />
+        <circle class="dots" cx="45" cy="44" r="10" />
+        <path class="dots" d="M45 62 L68 30" />
+        <path class="dots" d="M45 62 L60 26" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="winner-name" id="winner-name">@username</div>
+  <div class="reset-text">Resetting in <b id="reset-count">10</b>s</div>
+</div>
+
+
+
+
+  <div id="loadingOverlay" class="hidden">
+    <div class="spinner"></div>
+    <p>Fetching Aura...</p>
+  </div> 
+
+  <div id="fight-loader-overlay" class="hidden">
+    <div class="fight-arena">
+      <img id="avatar-1" class="fighter-avatar fighter-left" src="https://placehold.co/200x200/1a1717/8f8a8a?text=P1" alt="Fighter 1">
+      
+      <div class="clash-effect">💥</div>
+      
+      <img id="avatar-2" class="fighter-avatar fighter-right" src="https://placehold.co/200x200/1a1717/8f8a8a?text=P2" alt="Fighter 2">
+    </div>
+    <div class="loader-text">Battling for Aura...</div>
+  </div>
+
+
   <div class="page">
 
     <header>

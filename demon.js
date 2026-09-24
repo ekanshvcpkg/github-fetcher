@@ -80,3 +80,59 @@
 // } 
 
 // console.log(promisesetimeout(()=>console.log(5),2000)); // 
+
+
+// function promisesetime(func, time) { 
+//     const maindemon = new Promise((resolve ,reject){ 
+//         setTimeout(() => {
+//            try { 
+//             func();
+//             resolve("demon");
+
+//            }catch { 
+//             reject("error");
+
+//            }
+//         },time);
+    
+//     });
+// }
+
+
+// console.log("A");
+// async function demon() {
+//     console.log("F");
+    
+// }
+
+
+
+// function demon () { 
+//     let hex = 0; 
+//     return hex = hex+1;  // hex+1;
+// }
+
+// console.log(demon());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
